@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Esports VR Kodiakss</title>
+    <!--link to a-frame library - CDN -->
+<script src="//aframe.io/releases/1.1.0/aframe.min.js"></script>
+<!--extras library-->
+<script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.6.0/dist/aframe-extras.min.js"></script>
+<!--library for events setting on panels-->
+<script src="https://unpkg.com/aframe-event-set-component@5.x.x/dist/aframe-event-set-component.min.js"></script>
+<!--environment component-->
+<script src="//unpkg.com/aframe-environment-component@1.0.0/dist/aframe-environment-component.min.js"></script>
+  </head>
+
+
+  <body>
+    <a-scene>
+
+    <a-entity id="cameraRig" wasd-controls="enabled: true" position="0 1 10">
+
+  <a-camera look-controls="enabled: true">
+    <a-cursor
+      cursor="rayOrigin: mouse"
+      raycaster="objects: .clickable">
+    </a-cursor>
+  </a-camera>
+
+
+</a-entity>
+
+  <a-assets>
+    <!-- Define your model -->
+    <a-asset-item id="arena" src="aseets/arenalowpoly.glb"></a-asset-item>
+    <a-asset-item id="vandal" src="aseets/vandal.glb"></a-asset-item>
+    <a-asset-item id="sheriff" src="aseets/revolver.glb"></a-asset-item>
+    <a-asset-item id="sheriff1" src="aseets/revolver1.glb"></a-asset-item>
+    <a-asset-item id="raptor" src="aseets/raptor.glb"></a-asset-item>
+    <a-asset-item id="ff" src="aseets/ff.glb"></a-asset-item>
+     <a-asset-item id="valorant" src="aseets/valorant.glb"></a-asset-item>
+      <a-asset-item id="league" src="aseets/lol.glb"></a-asset-item>
+    <img id="posterImg" src="aseets/valorant-verticalposter.jpg">
+   <img id="posterleague" src="aseets/league-of-legends-verticalposter.jpg">
+   <img id="kodiakposter" src="aseets/KodiaksBanner.png">
+   <a-asset item id="sky" src="aseets/scene.gltf" ></a-asset>
+<audio id="sound" src="aseets/ambience.mp3"></audio>
+  </a-assets>
+
+  <!-- Place the model in the scene -->
+
+
+
+  <a-sphere position="-1 1.5 3" radius="0.2" color="#ffaa00" class="clickable"
+          sound="src: #sound; on: click">
+</a-sphere>
+
+<a-image src="aseets/KodiaksBanner.png"
+         position="0 3.2 -2.9"
+         width="2"
+         height="1"
+         scale="2.5 2.5 2.5"
+         class="clickable"
+          onclick="this.setAttribute('animation', 'property: rotation; to: 0 360 0; dur: 1500')">
+</a-image>
+
+<a-image src="aseets/meet_the_team.png"
+         position="-5 5.3 -0.1"
+         width="2"
+         height="1"
+         scale="2.5 2.5 2.5"
+         rotation="0 90 0">
+</a-image>
+  
+<a-image src="aseets/tema_valo.png"
+         position="5 5.3 -0.1"
+         width="2"
+         height="1"
+         scale="2.5 2.5 2.5"
+         rotation="0 -90 0">
+</a-image>
+
+<a-sphere position="1 1.5 3" radius="0.2" color="#ff4444" class="clickable"
+          onclick="document.querySelector('a-sky').setAttribute('color', '#88ccee')">
+</a-sphere>
+
+<a-entity gltf-model="#arena"></a-entity>
+
+<!--Raptor-->
+<a-entity 
+gltf-model="#raptor" 
+id="raptor1"
+scale="0.1 0.1 0.1" 
+position="-4.5 1.3 -1.9" 
+rotation="0 180 0"
+  >
+
+<a-animation 
+        attribute="position" 
+        to="-4.3 1.3 1" 
+        dur="2000"
+        direction="alternate"
+        loop="true">
+    </a-animation>
+
+    <a-animation 
+        attribute="rotation"
+        to="0 540 0" 
+        dur="4000"
+        direction="alternate"
+        loop="true"> 
+    </a-animation>
+
+</a-entity>
+<script>
+function startRaptorRunSequence() {
+    const raptor = document.getElementById('raptor1');
+    if (!raptor) return;
+
+    // Limpia animaciones anteriores
+    raptor.removeAttribute('animation__runout');
+    raptor.removeAttribute('animation__turn');
+    raptor.removeAttribute('animation__return');
+    raptor.removeAttribute('animation__resetturn');
+
+    // Corre hacia adelante
+    raptor.setAttribute('animation__runout', {
+        property: 'position',
+        to: '-4.3 1.3 1',
+        dur: 2000,
+        easing: 'easeInOutQuad'
+    });
+
+    // Gira
+    setTimeout(() => {
+        raptor.setAttribute('animation__turn', {
+            property: 'rotation',
+            to: '0 0 0',
+            dur: 500,
+            easing: 'linear'
+        });
+    }, 2000);
+
+    // Corre hacia atrás
+    setTimeout(() => {
+        raptor.setAttribute('animation__return', {
+            property: 'position',
+            to: '-4.5 1.3 -1.9',
+            dur: 2000,
+            easing: 'easeInOutQuad'
+        });
+    }, 2500);
+
+    // Gira al inicio
+    setTimeout(() => {
+        raptor.setAttribute('animation__resetturn', {
+            property: 'rotation',
+            to: '0 180 0',
+            dur: 500,
+            easing: 'linear'
+        });
+    }, 4500);
+}
+
+function startRaptorRunLoop() {
+    startRaptorRunSequence();
+    setInterval(startRaptorRunSequence, 5000); // tiempo exacto
+}
+
+window.onload = startRaptorRunLoop;
+</script>
+<!--FIn del experimento (hard but possible)-->
+
+<a-entity light="type: ambient; color: #ffffff; intensity: 1"></a-entity>
+
+
+
+<a-entity gltf-model="#vandal" scale="0.1 0.1. 0.1" position="3.4 2.7 1.3"  animation="property: rotation; dur:8000; easing:linear; loop:true; to: 0 360 0" ></a-entity>
+
+
+<a-entity gltf-model="#sheriff1" scale="0.08 0.08. 0.08" position="3.4 1.6 1.5" rotation="0 0 0" animation="property: rotation; dur:8000; easing:linear; loop:true; to: 0 360 0" ></a-entity>
+
+
+<a-entity gltf-model="#valorant" scale="0.45 0.45. 0.45" position="4.5 0.68 -0.9" ></a-entity>
+
+
+<a-entity gltf-model="#league" scale="0.2 0.2 0.2" position="-4.8 1.5 0.2" rotation="0 180 0" ></a-entity>
+
+
+<a-entity gltf-model="#ff" scale="0.1 0.1 0.1" position="-4.5 2.4 2.1"  rotation="0 180 0" 
+animation="property: scale; dir:alternate; dur:1500; easing: easeInOutQuad; loop:true; to:0.3 0.3 0.3"></a-entity>
+<a-entity ></a-entity>
+<!----plane experiment--->
+<!--Espacio de poster 1--->
+  <a-plane
+ 
+ id="poster1"
+               src="#posterImg"
+               width="1"
+               height="1.5"
+               position="3.28 2 3"
+               class="clickable"
+               onclick="myFunction()"
+               animation="property: position; 
+                           to: 3.28 2.2 3; 
+                           dir: alternate; 
+                           dur: 3000; 
+                           easing: easeInOutSine; 
+                           loop: true">
+         
+
+   
+
+ </a-plane>
+      
+<script>
+  function myFunction() {
+        document.getElementById("infoPanel").setAttribute('scale', '1 1 1');
+      }
+</script>
+<!--Espacio de poster 2--->
+
+ <a-plane id="poster2"
+               src="#posterleague"
+               width="1"
+               height="1.5"
+               position="-2.88 2 3"
+               class="clickable"
+               onclick="myFunction3()"
+               animation="property: position; 
+                           to: -2.88 2.2 3; 
+                           dir: alternate; 
+                           dur: 3000; 
+                           easing: easeInOutSine; 
+                           loop: true"
+               >
+      </a-plane>
+
+      <script>
+  function myFunction3() {
+        document.getElementById("infoPanel2").setAttribute('scale', '1 1 1');
+      }
+</script>
+
+<!--Experimento de paneles-->
+<!--Espacio de InfoPanel 1--->
+<script>
+  function myFunction2() {
+        document.getElementById("infoPanel").setAttribute('scale', '0');
+      }
+</script>
+
+<a-entity id="infoPanel"
+class="clickable"
+          position="3.38 2 3.5"
+          geometry="primitive: plane; width: 2; height: 1.2"
+          material="color: #222; opacity: 1"
+          scale="0"
+          class="clickable"
+          onclick="myFunction2()"
+
+          >
+
+  <a-text value="Valorant"
+          position="0 0.4 0"
+          align="center"
+          color="#fff"
+          width="2.5"></a-text>
+
+  <a-text value="Valorant is a competitive tactical hero shooter developed by riot games. Really popular online game because of the diversity of the characters and the satifying gun gameplay. 
+  Valorant is one of the 3 teams represented by the Kodiaks."
+          position="0 0 0"
+          align="center"
+          color="#ddd"
+          width="1.8"
+          wrap-count="35"></a-text>
+</a-entity>
+
+<!--Espacio de InfoPanel 2--->
+
+<script>
+  function myFunction4() {
+        document.getElementById("infoPanel2").setAttribute('scale', '0');
+      }
+</script>
+
+<a-entity id="infoPanel2"
+    class="clickable"
+    position="-2.88 2 3.5s" 
+    geometry="primitive: plane; width: 2; height: 1.2"
+    material="color: #444; opacity: 1" 
+    scale="0 0 0" 
+    onclick="myFunction4()">
+
+  <a-text value="League of Legends"
+          position="0 0.4 0"
+          align="center"
+          color="#fff"
+          width="2.5"></a-text>
+
+  <a-text value="League of Legends is the biggest competitive game in the scene. A classic moba with a variety of +150 champions with unique abilities and game styles. 
+I am currently representing this team as the main Jungler"
+          position="0 0 0"
+          align="center"
+          color="#ddd"
+          width="1.8"
+wrap-count="35"></a-text>
+</a-entity>
+
+
+
+  <!-- Basic scene setup -->
+  <a-sky src="aseets/textures/Background_baseColor.jpeg"></a-sky>
+</a-scene>
+  </body>
+</html>
